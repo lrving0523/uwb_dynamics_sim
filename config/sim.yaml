@@ -1,0 +1,88 @@
+simulation:
+  dt: 0.01
+  duration: 12.0
+  seed: 42
+  # 控制频率与动力学最大步长分开配置。
+  controller_hz: 100.0
+
+drone:
+  mass: 1.5
+  gravity: 9.81
+  inertia: [0.03, 0.03, 0.05]
+  initial_position: [0.0, 0.0, 1.5]
+  initial_velocity: [0.0, 0.0, 0.0]
+  # Hamilton wxyz，机体系 FLU 到世界系 ENU。
+  initial_quaternion: [1.0, 0.0, 0.0, 0.0]
+  initial_omega: [0.0, 0.0, 0.0]
+
+motor:
+  arm_length: 0.22
+  kf: 0.00001
+  km: 0.0000002
+  # kf 与 km 分别按 N/(rad/s)^2、N·m/(rad/s)^2 使用。
+  time_constant: 0.035     # 一阶滞后时间常数；电机转速响应的 63% 时间。
+  min_rpm: 0.0
+  max_rpm: 10000.0
+
+aerodynamics:
+  # 机体系线性与二次阻力；世界系空气速度独立于未知外力。
+  linear_drag: [0.12, 0.12, 0.16]
+  quadratic_drag: [0.02, 0.02, 0.03]
+  wind_velocity: [0.0, 0.0, 0.0]
+
+controller:   #PID 控制器参数；不与估计器耦合。
+  position_kp: [4.0, 4.0, 6.0]
+  velocity_kd: [3.0, 3.0, 4.0]
+  position_ki: [0.15, 0.15, 0.3]
+  integral_limit: 2.0
+  attitude_kp: [2.5, 2.5, 1.0]
+  rate_kd: [0.55, 0.55, 0.35]
+  max_acceleration: 6.0
+  max_tilt_deg: 35.0
+
+trajectory:
+  type: figure_eight
+  radius: 1.2
+  period: 8.0
+  yaw: 0.0
+
+sensors:
+  imu_acc_std: 0.05
+  imu_gyro_std: 0.002
+  imu_acc_bias: [0.0, 0.0, 0.0]
+  imu_gyro_bias: [0.0, 0.0, 0.0]
+  rpm_std: 5.0
+  uwb_std: 0.05
+  uwb_hz: 10
+  imu_hz: 200
+  rpm_hz: 100
+  # 白噪声为单次采样标准差；随机游走为每 sqrt(s) 增量标准差。
+  imu_acc_bias_rw_std: 0.001
+  imu_gyro_bias_rw_std: 0.0001
+
+wind:
+  enabled: false
+  # 此节控制世界系未知外力，不与气动阻力混合。
+  type: step
+  force: [0.6, -0.3, 0.15]
+  start_time: 4.0
+  frequency: 0.35
+  random_std: [0.3, 0.3, 0.15]
+  random_hz: 10.0
+
+uwb:
+  lever_arm: [0.08, 0.0, 0.03] # 从无人机中心到UWB标签的距离
+  anchors:
+    - [-8.0, -8.0, 0.3]
+    - [8.0, -8.0, 1.5]
+    - [8.0, 8.0, 2.4]
+    - [-8.0, 8.0, 3.2]
+    - [0.0, -8.0, 1.0]
+    - [8.0, 0.0, 2.8]
+    - [0.0, 8.0, 1.7]
+    - [-8.0, 0.0, 3.5]
+
+output:
+  directory: results/phase1
+  formats: [png, pdf, svg]
+  csv: true

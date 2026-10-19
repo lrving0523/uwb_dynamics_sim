@@ -1,0 +1,32 @@
+# 阶段三：真实训练 TCN 与独立名义物理参数。
+physics:
+  mass: 1.5
+  gravity: 9.81
+  kf: 0.00001
+  linear_drag: [0.0, 0.0, 0.0]
+  quadratic_drag: [0.0, 0.0, 0.0]
+  wind_velocity: [0.0, 0.0, 0.0]
+filter:
+  # 物理与混合方法使用完全相同且不按结果调节的力误差先验，单位 N。
+  model_force_std: [0.25, 0.25, 0.25]
+network:
+  sequence_length: 10
+  input_hz: 100
+  channels: 32
+  layers: 3
+  kernel_size: 3
+training:
+  seed: 42
+  threads: 1
+  epochs: 60
+  batch_size: 256
+  learning_rate: 0.0015
+  weight_decay: 0.00001
+data:
+  simulation_config: config/sim.yaml
+  duration: 18.0
+  dt: 0.01
+  split_seeds:
+    train: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
+    val: [200, 201, 202]
+    test: [300, 301, 302]

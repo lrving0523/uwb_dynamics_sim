@@ -1,0 +1,15 @@
+# 独立估计先验；不是从仿真真实状态读取的初值。
+gravity: 9.81
+measurement_std_floor: 0.000001
+initial:
+  quaternion: [1.0, 0.0, 0.0, 0.0]
+  velocity: [0.0, 0.0, 0.0]
+  acc_bias: [0.0, 0.0, 0.0]
+  gyro_bias: [0.0, 0.0, 0.0]
+  velocity_std: 0.5
+  attitude_std: [0.15, 0.15, 0.5]
+  acc_bias_std: 0.15
+  gyro_bias_std: 0.02
+ls:
+  max_iterations: 50
+  tolerance: 0.00000001

@@ -1,0 +1,4 @@
+# 阶段三 CPU 训练环境；基础依赖见 requirements.txt。
+# Anaconda MKL 与 PyTorch 共存时，入口在导入数值库前使用 MKL_THREADING_LAYER=SEQUENTIAL。
+-r requirements.txt
+torch==2.7.1
